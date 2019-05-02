@@ -2,6 +2,7 @@ package com.firebot.dhruv.tensorflow;
 
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,4 +63,15 @@ public class Utils {
 
 	}
 
+
+	public static void fillZeroes(int[][] array) {
+		if (array == null) {
+			return;
+		}
+
+		int r;
+		for (r = 0; r < array.length; r++) {
+			Arrays.fill(array[r], 0);
+		}
+	}
 }

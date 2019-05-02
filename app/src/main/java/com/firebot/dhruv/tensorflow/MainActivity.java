@@ -48,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
 	private int[][] segmentMap;
 	ImageView destImage;
 
+//	LABEL_NAMES =
+//			'background', 'aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus',
+//			'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse', 'motorbike',
+//			'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tv'
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -99,36 +104,33 @@ public class MainActivity extends AppCompatActivity {
 	private void convertBitmapToByteBuffer(Bitmap bitmap) {
 		bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
 		int pixel = 0;
+		imgData.rewind();
+
 		for (int i = 0; i < inputSize; ++i) {
 			for (int j = 0; j < inputSize; ++j) {
 				int pixelValue = intValues[pixel++];
 //				if (isModelQuantized) {
 				// Quantized model
-				imgData.put((byte) ((pixelValue >> 16) & 0xFF));
-				imgData.put((byte) ((pixelValue >> 8) & 0xFF));
-				imgData.put((byte) (pixelValue & 0xFF));
+//				imgData.put((byte) ((pixelValue >> 16) & 0xFF));
+//				imgData.put((byte) ((pixelValue >> 8) & 0xFF));
+//				imgData.put((byte) (pixelValue & 0xFF));
 //				}
 
 				//else { // Float model
-//					imgData.putFloat((((pixelValue >> 16) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
-//					imgData.putFloat((((pixelValue >> 8) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
-//					imgData.putFloat(((pixelValue & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
+				imgData.putFloat((((pixelValue >> 16) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
+				imgData.putFloat((((pixelValue >> 8) & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
+				imgData.putFloat(((pixelValue & 0xFF) - IMAGE_MEAN) / IMAGE_STD);
 //				}
 			}
 		}
 
 		tflite.run(imgData, labelProbArray);
-		for (int k = 0; k < 21; k++)
-			Log.d("Data", String.valueOf(labelProbArray[0][128][128][k]));
 
 
+		Utils.fillZeroes(segmentMap);
 		for (int i = 0; i < inputSize; i++)
 			for (int j = 0; j < inputSize; j++) {
 				segmentMap[i][j] = getIndexOfLargest(labelProbArray[0][i][j]);
-//				Log.d("Data", String.valueOf(segmentMap[i][j]));
-//				for (int k=0; k<21;k++)
-//				if(labelProbArray[0][i][j][0]<6)
-//					Log.d("data", String.valueOf(labelProbArray[0][i][j][0]));
 			}
 
 		drawBitmap();
@@ -149,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 		for (int i = 0; i < inputSize; i++)
 			for (int j = 0; j < inputSize; j++) {
 				if (segmentMap[i][j] != 0)
-					canvas.drawPoint(i, j, p);
+					canvas.drawPoint(j, i, p);
 			}
 
 
