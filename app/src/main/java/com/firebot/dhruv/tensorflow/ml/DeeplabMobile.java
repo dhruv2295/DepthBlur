@@ -124,7 +124,7 @@ public class DeeplabMobile implements DeeplabInterface {
 
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
-                output.setPixel(x,y,mOutputs[y * w + x] == 0 ? Color.TRANSPARENT :bitmap.getPixel(x,y));
+                output.setPixel(x,y,mOutputs[y * w + x] != 0 ? Color.TRANSPARENT :bitmap.getPixel(x,y));
 //                output.setPixel(x, y, mOutputs[y * w + x] == 0 ? Color.BLACK : Color.RED);
             }
         }

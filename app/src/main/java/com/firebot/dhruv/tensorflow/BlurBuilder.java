@@ -13,11 +13,12 @@ import android.renderscript.ScriptIntrinsicBlur;
 
 public class BlurBuilder {
     private static final float BITMAP_SCALE = 1f;
-    private static final float BLUR_RADIUS = 6f;
+    private static  float BLUR_RADIUS = 6f;
 
-    public static Bitmap blur(Context context, Bitmap image) {
+    public static Bitmap blur(Context context, Bitmap image, int value) {
         int width = Math.round(image.getWidth() * BITMAP_SCALE);
         int height = Math.round(image.getHeight() * BITMAP_SCALE);
+        BLUR_RADIUS = value;
 
         Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
         Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);

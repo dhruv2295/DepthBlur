@@ -14,8 +14,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.firebot.dhruv.tensorflow.ml.DeeplabInterface;
 import com.firebot.dhruv.tensorflow.ml.DeeplabModel;
 import com.firebot.dhruv.tensorflow.ml.ImageUtils;
+import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
 import java.io.File;
-import java.util.logging.Logger;
 
 import timber.log.Timber;
 
@@ -24,9 +24,10 @@ public class MainActivity extends AppCompatActivity {
 
 	ImageView destImage;
 	int w, h;
-	ImageView sourceImage;
 	ImageView original;
 	Bitmap scaledDown;
+	Bitmap resized;
+	Bitmap mask;
 
 //	LABEL_NAMES =
 //			'0:background', '1:aeroplane', '2:bicycle', '3:bird', '4:boat', '5:bottle', '6:bus',
@@ -52,12 +53,9 @@ public class MainActivity extends AppCompatActivity {
 		final DeeplabInterface deeplabInterface = DeeplabModel.getInstance();
 		DeeplabModel.getInstance().initialize(this);
 
-		sourceImage = findViewById(R.id.source);
-
 		Glide.with(this).asBitmap().load(media).into(new SimpleTarget<Bitmap>() {
 			@Override
 			public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-				sourceImage.setImageBitmap(resource);
 				w = resource.getWidth();
 				h = resource.getHeight();
 
@@ -68,19 +66,31 @@ public class MainActivity extends AppCompatActivity {
 				Timber.d("resize bitmap: ratio = %f, [%d x %d] -> [%d x %d]",
 						resizeRatio, w, h, rw, rh);
 
-				Bitmap resized = ImageUtils.tfResizeBilinear(resource, rw, rh);
+				resized = ImageUtils.tfResizeBilinear(resource, rw, rh);
 
-				original.setImageBitmap(BlurBuilder.blur(MainActivity.this,resized));
+//				original.setImageBitmap(BlurBuilder.blur(MainActivity.this,resized));
+				original.setImageBitmap(resized);
 
-				Bitmap mask = deeplabInterface.segment(resized);
+				mask = deeplabInterface.segment(resized);
 				Timber.d(resized.getHeight()+";"+resized.getWidth());
 				Timber.d(mask.getHeight()+";"+mask.getWidth());
 				destImage.setImageBitmap(mask);
-				destImage.setAlpha(0.7f);
 
 			}
 		});
 
 
+
+		final HorizontalWheelView horizontalWheelView =  findViewById(R.id.horizontalWheelView);
+		horizontalWheelView.setEndLock(true);
+		horizontalWheelView.setSnapToMarks(true);
+		horizontalWheelView.setListener(new HorizontalWheelView.Listener() {
+			@Override
+			public void onRotationChanged(double radians) {
+				destImage.setImageBitmap(BlurBuilder.blur(MainActivity.this,mask, (int)(1+20* horizontalWheelView.getCompleteTurnFraction())));
+//				original.setImageBitmap(BlurBuilder.blur(MainActivity.this,resized, (int)(20* horizontalWheelView.getCompleteTurnFraction())));
+//				original.setImageBitmap(BlurBuilder.blur(MainActivity.this,resized, 20));
+			}
+		});
 	}
 }
