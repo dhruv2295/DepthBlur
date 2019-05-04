@@ -1,6 +1,7 @@
 package com.firebot.dhruv.tensorflow;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,12 @@ import java.util.ArrayList;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder> {
 	private ArrayList<String> mDataset;
 	private Context context;
+	private ItemClickListener mClickListener;
 
 	// Provide a reference to the views for each data item
 	// Complex data items may need more than one view per item, and
 	// you provide access to all the views for a data item in a view holder
-	public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+	public  class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 		// each data item is just a string in this case
 		public ImageView imageView;
 
@@ -33,6 +35,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 
 		@Override
 		public void onClick(View v) {
+			if (mClickListener != null) mClickListener.onItemClick(mDataset.get(getAdapterPosition()), getAdapterPosition());
 
 		}
 	}
@@ -71,5 +74,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.MyViewHolder
 	@Override
 	public int getItemCount() {
 		return mDataset.size();
+	}
+
+	public void setClickListener(ItemClickListener itemClickListener) {
+		this.mClickListener = itemClickListener;
+	}
+	public interface ItemClickListener {
+		void onItemClick(String path, int position);
 	}
 }

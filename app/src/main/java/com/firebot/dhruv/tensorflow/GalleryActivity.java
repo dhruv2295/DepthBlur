@@ -1,32 +1,34 @@
 package com.firebot.dhruv.tensorflow;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
+import android.widget.TextView;
 
-import java.io.File;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedQueue;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class GalleryActivity extends AppCompatActivity {
 	String absolutePathOfImage;
+	@BindView(R.id.gallery) RecyclerView recyclerView;
+	@BindView(R.id.textView) TextView textView;
+
 	private ArrayList<String> listOfAllImages;
-	private RecyclerView recyclerView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gallery);
+		ButterKnife.bind(this);
 
-		recyclerView =  findViewById(R.id.gallery);
 
 		listOfAllImages = new ArrayList<>();
 		// use this setting to improve performance if you know that changes
@@ -34,17 +36,17 @@ public class GalleryActivity extends AppCompatActivity {
 		recyclerView.setHasFixedSize(true);
 
 		// use a linear layout manager
-		GridLayoutManager layoutManager = new GridLayoutManager(this,3);
+		GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
 		recyclerView.setLayoutManager(layoutManager);
 
 		// specify an adapter (see also next example)
-		ImageAdapter mAdapter = new ImageAdapter(listOfAllImages,this);
+		ImageAdapter mAdapter = new ImageAdapter(listOfAllImages, this);
 		recyclerView.setAdapter(mAdapter);
 		ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(this, R.dimen.item_margin);
 		recyclerView.addItemDecoration(itemDecoration);
 
 
-		Uri uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+		Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
 
 		String[] projection = {MediaStore.MediaColumns.DATA};
@@ -56,9 +58,17 @@ public class GalleryActivity extends AppCompatActivity {
 		}
 		mAdapter.notifyDataSetChanged();
 
+
+		mAdapter.setClickListener(new ImageAdapter.ItemClickListener() {
+			@Override
+			public void onItemClick(String path, int position) {
+				Intent i = new Intent(GalleryActivity.this, MainActivity.class);
+				i.putExtra("path", path);
+				startActivity(i);
+				overridePendingTransition(R.anim.slide_up,R.anim.nothing);
+			}
+		});
 	}
-
-
 
 
 }

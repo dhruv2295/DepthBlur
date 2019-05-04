@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black"
+    android:theme="@android:style/ThemeOverlay.Material.Dark"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -38,6 +39,15 @@
         app:layout_constraintTop_toTopOf="@+id/original"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageView
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:foreground="?android:attr/actionBarItemBackground"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.github.shchurov.horizontalwheelview.HorizontalWheelView
         android:id="@+id/horizontalWheelView"
