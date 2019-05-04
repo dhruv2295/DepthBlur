@@ -1,8 +1,14 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-android'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('/Users/dhruv/AndroidStudioProjects/firebotkeys')
+            storePassword 'Dhruv2295'
+            keyAlias = 'key0'
+            keyPassword 'Dhruv2295'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.firebot.dhruv.tensorflow"
@@ -14,8 +20,11 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+
         }
     }
     aaptOptions {
@@ -41,10 +50,7 @@ dependencies {
     implementation "org.tensorflow:tensorflow-android:1.13.1"
     implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
-    implementation 'com.droidninja:filepicker:2.2.1'
     implementation 'com.android.support:design:28.0.0'
-    implementation "androidx.core:core-ktx:1.0.1"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
     implementation 'com.google.android.material:material:1.0.0'

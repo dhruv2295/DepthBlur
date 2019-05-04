@@ -27,7 +27,7 @@ import timber.log.Timber;
 
 public class DeepLabLite implements DeeplabInterface {
 
-    private final static String MODEL_PATH = "deeplabv3_257_mv_gpu.tflite";
+    private final static String MODEL_PATH = "deeplabv3.tflite";
     private final static boolean USE_GPU = false;
 
     private static final float IMAGE_MEAN = 128.0f;
@@ -183,7 +183,8 @@ public class DeepLabLite implements DeeplabInterface {
                     }
                 }
 
-                maskBitmap.setPixel(x, y, mSegmentColors[mSegmentBits[x][y]]);
+//                maskBitmap.setPixel(x, y, mSegmentColors[mSegmentBits[x][y]]);
+                maskBitmap.setPixel(x,y,mSegmentBits[x][y] != 0 ? Color.TRANSPARENT :bitmap.getPixel(x,y));
             }
         }
 
