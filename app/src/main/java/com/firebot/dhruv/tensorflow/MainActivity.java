@@ -1,10 +1,10 @@
 package com.firebot.dhruv.tensorflow;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,12 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.firebot.dhruv.tensorflow.ml.DeeplabModel;
 import com.firebot.dhruv.tensorflow.ml.ImageUtils;
 import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 	@BindView(R.id.segment) ImageView destImage;
 	@BindView(R.id.exit) ImageView exit;
 	@BindView(R.id.horizontalWheelView) HorizontalWheelView horizontalWheelView;
+	@BindView(R.id.progressBar) ProgressBar progressBar;
 	private int inputSize = 513;
 
 	int w, h;
@@ -53,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
+		progressBar.setVisibility(View.VISIBLE);
 
 		original.setImageBitmap(scaledDown);
 
@@ -71,17 +69,22 @@ public class MainActivity extends AppCompatActivity {
 
 				resized = ImageUtils.tfResizeBilinear(resource, rw, rh);
 
-//				original.setImageBitmap(BlurBuilder.blur(MainActivity.this,resized));
 				original.setImageBitmap(resized);
 
-				mask = DeeplabModel.getInstance().segment(resized);
-				Timber.d(resized.getHeight() + ";" + resized.getWidth());
-				Timber.d(mask.getHeight() + ";" + mask.getWidth());
-				destImage.setImageBitmap(mask);
+//				mask = DeeplabModel.getInstance().segment(resized);
+
+				new SegmentTask(result -> {
+
+					mask = result;
+					destImage.setImageBitmap(mask);
+					Timber.d(resized.getHeight() + ";" + resized.getWidth());
+					Timber.d(mask.getHeight() + ";" + mask.getWidth());
+					progressBar.setVisibility(View.INVISIBLE);
+					horizontalWheelView.setCompleteTurnFraction(0.5f);
+				}).execute(resized);
 
 			}
 		});
-
 
 
 		horizontalWheelView.setEndLock(true);
@@ -89,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
 		horizontalWheelView.setListener(new HorizontalWheelView.Listener() {
 			@Override
 			public void onRotationChanged(double radians) {
-				destImage.setImageBitmap(BlurBuilder.blur(MainActivity.this, mask, (int) (1 + 20 * horizontalWheelView.getCompleteTurnFraction())));
+				if (mask != null)
+					destImage.setImageBitmap(BlurBuilder.blur(MainActivity.this, mask, (int) (1 + 20 * horizontalWheelView.getCompleteTurnFraction())));
 //				original.setImageBitmap(BlurBuilder.blur(MainActivity.this,resized, (int)(20* horizontalWheelView.getCompleteTurnFraction())));
 //				original.setImageBitmap(BlurBuilder.blur(MainActivity.this,resized, 20));
 			}
