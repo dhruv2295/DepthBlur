@@ -21,7 +21,6 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.logging.Logger;
 
 import timber.log.Timber;
 

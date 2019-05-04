@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
 	@BindView(R.id.exit) ImageView exit;
 	@BindView(R.id.horizontalWheelView) HorizontalWheelView horizontalWheelView;
 	@BindView(R.id.progressBar) ProgressBar progressBar;
-	private int inputSize = 513;
-//	private int inputSize = 257;
+	private int inputSize = 257;
 
 	int w, h;
 	Bitmap scaledDown;

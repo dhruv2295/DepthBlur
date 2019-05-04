@@ -2,7 +2,6 @@ package com.firebot.dhruv.tensorflow.ml;
 
 public class DeeplabModel {
 
-    private final static Boolean USE_TF_LITE = false;
 
     private static DeeplabInterface sInterface = null;
 
@@ -11,11 +10,7 @@ public class DeeplabModel {
             return sInterface;
         }
 
-        if (USE_TF_LITE) {
             sInterface = new DeepLabLite();
-        } else {
-            sInterface = new DeeplabMobile();
-        }
 
         return sInterface;
     }
