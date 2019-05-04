@@ -49,8 +49,10 @@ public class GalleryActivity extends AppCompatActivity {
 		Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
 
-		String[] projection = {MediaStore.MediaColumns.DATA};
-		Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+		String[] projection = new String[] {MediaStore.Images.ImageColumns._ID, MediaStore.Images.ImageColumns.DATE_TAKEN, MediaStore.Images.ImageColumns.DATA, MediaStore.Images.ImageColumns.ORIENTATION};
+		String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
+
+		Cursor cursor = getContentResolver().query(uri, projection, null, null, orderBy);
 
 		while (cursor.moveToNext()) {
 			absolutePathOfImage = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA));
@@ -59,14 +61,11 @@ public class GalleryActivity extends AppCompatActivity {
 		mAdapter.notifyDataSetChanged();
 
 
-		mAdapter.setClickListener(new ImageAdapter.ItemClickListener() {
-			@Override
-			public void onItemClick(String path, int position) {
-				Intent i = new Intent(GalleryActivity.this, MainActivity.class);
-				i.putExtra("path", path);
-				startActivity(i);
-				overridePendingTransition(R.anim.slide_up,R.anim.nothing);
-			}
+		mAdapter.setClickListener((path, position) -> {
+			Intent i = new Intent(GalleryActivity.this, MainActivity.class);
+			i.putExtra("path", path);
+			startActivity(i);
+			overridePendingTransition(R.anim.slide_up,R.anim.nothing);
 		});
 	}
 
