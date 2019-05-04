@@ -1,10 +1,8 @@
 package com.firebot.dhruv.tensorflow;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Application;
-import android.os.Bundle;
 
 import com.firebot.dhruv.tensorflow.ml.DeeplabModel;
 
