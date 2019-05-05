@@ -1,9 +1,13 @@
 package com.firebot.dhruv.tensorflow;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.net.Uri;
+import android.provider.OpenableColumns;
 import android.util.Log;
 
 import androidx.exifinterface.media.ExifInterface;
@@ -166,5 +170,24 @@ public class Utils {
 		canvas.drawBitmap(bmp2, new Matrix(), null);
 		return bmOverlay;
 	}
+	public static String getName(Context context, Uri uri)
+	{
+		Cursor returnCursor =
+				context.getContentResolver().query(uri, null, null, null, null);
+		/*
+		 * Get the column indexes of the data in the Cursor,
+		 * move to the first row in the Cursor, get the data,
+		 * and display it.
+		 */
+		int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+		int sizeIndex = returnCursor.getColumnIndex(OpenableColumns.SIZE);
+		returnCursor.moveToFirst();
+//        nameView.setText(returnCursor.getString(nameIndex));
+//        sizeView.setText(Long.toString(returnCursor.getLong(sizeIndex)));
 
+		String name = returnCursor.getString(nameIndex);
+
+		returnCursor.close();
+		return name;
+	}
 }
