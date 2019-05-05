@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-package com.firebot.dhruv.tensorflow.ml;
+package com.firebot.dhruv.depthblur.ml;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

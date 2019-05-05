@@ -1,7 +1,6 @@
-package com.firebot.dhruv.tensorflow;
+package com.firebot.dhruv.depthblur;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

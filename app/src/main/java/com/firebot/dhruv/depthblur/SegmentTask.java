@@ -1,9 +1,9 @@
-package com.firebot.dhruv.tensorflow;
+package com.firebot.dhruv.depthblur;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
-import com.firebot.dhruv.tensorflow.ml.DeeplabModel;
+import com.firebot.dhruv.depthblur.ml.DeeplabModel;
 
 
 

@@ -1,4 +1,4 @@
-package com.firebot.dhruv.tensorflow.ml;
+package com.firebot.dhruv.depthblur.ml;
 
 public class DeeplabModel {
 

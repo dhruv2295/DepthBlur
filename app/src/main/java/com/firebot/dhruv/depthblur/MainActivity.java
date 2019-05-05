@@ -1,4 +1,4 @@
-package com.firebot.dhruv.tensorflow;
+package com.firebot.dhruv.depthblur;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +17,7 @@ import androidx.core.content.FileProvider;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.firebot.dhruv.tensorflow.ml.ImageUtils;
+import com.firebot.dhruv.depthblur.ml.ImageUtils;
 import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

@@ -1,4 +1,4 @@
-package com.firebot.dhruv.tensorflow;
+package com.firebot.dhruv.depthblur;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class Utils {
 

@@ -1,4 +1,4 @@
-package com.firebot.dhruv.tensorflow;
+package com.firebot.dhruv.depthblur;
 
 import android.content.Context;
 import android.util.AttributeSet;

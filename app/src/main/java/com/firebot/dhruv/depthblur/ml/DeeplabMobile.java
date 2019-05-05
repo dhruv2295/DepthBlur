@@ -1,24 +1,21 @@
-package com.firebot.dhruv.tensorflow.ml;
+package com.firebot.dhruv.depthblur.ml;
 
 import android.content.Context;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils;
 
 
-import com.firebot.dhruv.tensorflow.R;
+import com.firebot.dhruv.depthblur.R;
 
 import org.tensorflow.Graph;
 import org.tensorflow.Operation;
 import org.tensorflow.Output;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import timber.log.Timber;
 

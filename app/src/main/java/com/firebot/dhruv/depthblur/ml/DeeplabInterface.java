@@ -1,4 +1,4 @@
-package com.firebot.dhruv.tensorflow.ml;
+package com.firebot.dhruv.depthblur.ml;
 
 import android.content.Context;
 import android.graphics.Bitmap;

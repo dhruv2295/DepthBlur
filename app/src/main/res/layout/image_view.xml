@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.firebot.dhruv.tensorflow.SquareImageView
+<com.firebot.dhruv.depthblur.SquareImageView
     android:id="@+id/imageView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
