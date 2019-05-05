@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 	Bitmap resized;
 	Bitmap mask;
 	Bitmap blurred;
+	Bitmap source;
 
 //	LABEL_NAMES =
 //			'0:background', '1:aeroplane', '2:bicycle', '3:bird', '4:boat', '5:bottle', '6:bus',
@@ -59,39 +60,46 @@ public class MainActivity extends AppCompatActivity {
 	@OnClick(R.id.floatingActionButton2)
 	public void _share(FloatingActionButton imageView) {
 		progressBar.setVisibility(View.VISIBLE);
-		Bitmap overlay = Utils.overlay(resized, blurred);
+//		Bitmap overlay = Utils.overlay(resized, blurred);
 //		Bitmap finalBitmap = ImageUtils.tfResizeBilinear(overlay, w, h);
-		File sdc = new File(Environment.getExternalStorageDirectory() + "/DepthBlur");
-		if (!sdc.exists()) {
-			sdc.mkdirs();
-		}
+//		Bitmap overlay = Utils.overlay(source, ImageUtils.tfResizeBilinear(blurred, w, h));
 
-		File media = new File(getIntent().getStringExtra("path"));
+		new BitmapTask(w, h, overlay -> {
+			File sdc = new File(Environment.getExternalStorageDirectory() + "/DepthBlur");
+			if (!sdc.exists()) {
+				sdc.mkdirs();
+			}
 
-		Uri uri = FileProvider.getUriForFile(
-				this,
-				getApplicationContext()
-						.getPackageName() + ".provider", media);
+			File media = new File(getIntent().getStringExtra("path"));
 
-		File resultImage = new File(sdc.getAbsolutePath()+File.separator + Utils.getName(this, uri));
-		try (FileOutputStream out = new FileOutputStream(resultImage)) {
-			overlay.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
-			// PNG is a lossless format, the compression factor (100) is ignored
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+			Uri uri = FileProvider.getUriForFile(
+					MainActivity.this,
+					getApplicationContext()
+							.getPackageName() + ".provider", media);
 
-		Uri resulturi = FileProvider.getUriForFile(
-				this,
-				getApplicationContext()
-						.getPackageName() + ".provider", resultImage);
+			File resultImage = new File(sdc.getAbsolutePath() + File.separator + Utils.getName(MainActivity.this, uri));
+			try (FileOutputStream out = new FileOutputStream(resultImage)) {
+				overlay.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
+				// PNG is a lossless format, the compression factor (100) is ignored
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-		progressBar.setVisibility(View.INVISIBLE);
-		Intent shareIntent = new Intent();
-		shareIntent.setAction(Intent.ACTION_SEND);
-		shareIntent.putExtra(Intent.EXTRA_STREAM, resulturi);
-		shareIntent.setType("image/*");
-		startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+			Uri resulturi = FileProvider.getUriForFile(
+					MainActivity.this,
+					getApplicationContext()
+							.getPackageName() + ".provider", resultImage);
+
+			progressBar.setVisibility(View.INVISIBLE);
+			Intent shareIntent = new Intent();
+			shareIntent.setAction(Intent.ACTION_SEND);
+			shareIntent.putExtra(Intent.EXTRA_STREAM, resulturi);
+			shareIntent.setType("image/*");
+			startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+
+		}).execute(source, blurred);
+
+
 
 	}
 
@@ -109,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
 				w = resource.getWidth();
 				h = resource.getHeight();
 
+				source = resource;
 				float resizeRatio = (float) inputSize / Math.max(w, h);
 				int rw = Math.round(w * resizeRatio);
 				int rh = Math.round(h * resizeRatio);
@@ -128,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
 					blurred = result;
 					destImage.setImageBitmap(mask);
 					share.show();
-					Timber.d(resized.getHeight() + ";" + resized.getWidth());
-					Timber.d(mask.getHeight() + ";" + mask.getWidth());
 					progressBar.setVisibility(View.INVISIBLE);
 					horizontalWheelView.setCompleteTurnFraction(0.5f);
 				}).execute(resized);
@@ -147,8 +154,6 @@ public class MainActivity extends AppCompatActivity {
 					blurred = BlurBuilder.blur(MainActivity.this, mask, (int) (1 + 20 * horizontalWheelView.getCompleteTurnFraction()));
 					destImage.setImageBitmap(blurred);
 				}
-//				original.setImageBitmap(BlurBuilder.blur(MainActivity.this,resized, (int)(20* horizontalWheelView.getCompleteTurnFraction())));
-//				original.setImageBitmap(BlurBuilder.blur(MainActivity.this,resized, 20));
 			}
 		});
 	}
