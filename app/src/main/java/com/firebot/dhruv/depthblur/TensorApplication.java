@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.firebot.dhruv.depthblur.ml.DeeplabModel;
 
+import io.fabric.sdk.android.Fabric;
 import org.jetbrains.annotations.NotNull;
 
 import timber.log.Timber;
@@ -24,5 +26,6 @@ public class TensorApplication extends Application {
 				return super.createStackElementTag(element) + ":" + element.getLineNumber();
 			}
 		});
+		Fabric.with(this, new Crashlytics());
 	}
 }

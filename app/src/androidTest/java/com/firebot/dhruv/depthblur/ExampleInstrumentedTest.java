@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
 		// Context of the app under test.
 		Context appContext = InstrumentationRegistry.getTargetContext();
 
-		assertEquals("com.firebot.dhruv.tensorflow", appContext.getPackageName());
+		assertEquals("com.firebot.dhruv.depthblur", appContext.getPackageName());
 	}
 }

@@ -35,6 +35,9 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="536a5a8fdf84d2fbf64078b15312df286f1789cb" />
     </application>
 
 </manifest>
