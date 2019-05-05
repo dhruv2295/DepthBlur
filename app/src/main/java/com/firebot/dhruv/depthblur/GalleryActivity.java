@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebot.dhruv.depthblur.utils.ItemOffsetDecoration;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;

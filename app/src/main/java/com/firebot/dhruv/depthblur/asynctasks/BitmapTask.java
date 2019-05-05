@@ -1,8 +1,9 @@
-package com.firebot.dhruv.depthblur;
+package com.firebot.dhruv.depthblur.asynctasks;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
+import com.firebot.dhruv.depthblur.utils.Utils;
 import com.firebot.dhruv.depthblur.ml.ImageUtils;
 
 

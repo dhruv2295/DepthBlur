@@ -1,4 +1,4 @@
-package com.firebot.dhruv.depthblur;
+package com.firebot.dhruv.depthblur.utils;
 
 import android.content.Context;
 import android.database.Cursor;
