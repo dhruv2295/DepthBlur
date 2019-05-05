@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "498437527064",
+    "firebase_url": "https://depthblur-ac3ab.firebaseio.com",
+    "project_id": "depthblur-ac3ab",
+    "storage_bucket": "depthblur-ac3ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498437527064:android:99393f98598cf584",
+        "android_client_info": {
+          "package_name": "com.firebot.dhruv.depthblur"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "498437527064-km4rr76477b5qbv00kuhv77iadbfpc5d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.firebot.dhruv.depthblur",
+            "certificate_hash": "f0541819dc7e5b30382fe6968c27e9e11aa662bf"
+          }
+        },
+        {
+          "client_id": "498437527064-uvok98g24vtf6l6a2agfmmhfurcr2msc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-qfrsWwsOLZY5j_8VM8tM-Y-R_jAfqMo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "498437527064-uvok98g24vtf6l6a2agfmmhfurcr2msc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-3991790391460512~3582470569"
+    }
+  ],
+  "configuration_version": "1"
+}
