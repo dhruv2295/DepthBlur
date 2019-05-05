@@ -1,5 +1,6 @@
 package com.firebot.dhruv.tensorflow;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -79,7 +80,19 @@ public class MainActivity extends AppCompatActivity {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		Uri resulturi = FileProvider.getUriForFile(
+				this,
+				getApplicationContext()
+						.getPackageName() + ".provider", resultImage);
+
 		progressBar.setVisibility(View.INVISIBLE);
+		Intent shareIntent = new Intent();
+		shareIntent.setAction(Intent.ACTION_SEND);
+		shareIntent.putExtra(Intent.EXTRA_STREAM, resulturi);
+		shareIntent.setType("image/*");
+		startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+
 	}
 
 	@Override
