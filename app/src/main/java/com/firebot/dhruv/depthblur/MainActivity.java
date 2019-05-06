@@ -1,10 +1,12 @@
 package com.firebot.dhruv.depthblur;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -115,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
 		progressBar.setVisibility(View.VISIBLE);
 		share.hide();
 
+		Vibrator v;
+		v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
 		Glide.with(this).asBitmap().load(getIntent().getStringExtra("path")).into(new SimpleTarget<Bitmap>() {
 			@Override
 			public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
@@ -131,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
 				resized = ImageUtils.tfResizeBilinear(resource, rw, rh);
 
-				original.setImageBitmap(resized);
+				original.setImageBitmap(source);
 
 //				mask = DeeplabModel.getInstance().segment(resized);
 
@@ -154,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
 		horizontalWheelView.setListener(new HorizontalWheelView.Listener() {
 			@Override
 			public void onRotationChanged(double radians) {
+				v.vibrate(500);
+
 				if (mask != null) {
 					blurred = BlurBuilder.blur(MainActivity.this, mask, (int) (1 + 20 * horizontalWheelView.getCompleteTurnFraction()));
 					destImage.setImageBitmap(blurred);
