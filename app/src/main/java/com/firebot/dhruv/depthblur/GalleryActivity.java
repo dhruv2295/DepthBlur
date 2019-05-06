@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebot.dhruv.depthblur.utils.ItemOffsetDecoration;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
@@ -31,6 +33,8 @@ public class GalleryActivity extends AppCompatActivity {
 	RecyclerView recyclerView;
 	@BindView(R.id.textView)
 	TextView textView;
+	@BindView(R.id.adView)
+	AdView adView;
 
 	private ArrayList<String> listOfAllImages;
 	private ImageAdapter mAdapter;
@@ -41,6 +45,8 @@ public class GalleryActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_gallery);
 		ButterKnife.bind(this);
 
+		AdRequest adRequest = new AdRequest.Builder().build();
+		adView.loadAd(adRequest);
 
 		listOfAllImages = new ArrayList<>();
 		// use this setting to improve performance if you know that changes

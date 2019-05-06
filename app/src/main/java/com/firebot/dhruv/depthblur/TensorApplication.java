@@ -6,6 +6,7 @@ import android.app.Application;
 
 import com.crashlytics.android.Crashlytics;
 import com.firebot.dhruv.depthblur.ml.DeeplabModel;
+import com.google.android.gms.ads.MobileAds;
 
 import io.fabric.sdk.android.Fabric;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,8 @@ public class TensorApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		DeeplabModel.getInstance().initialize(this);
+
+		MobileAds.initialize(this, getString(R.string.ad_app_id));
 
 		Timber.plant(new Timber.DebugTree() {
 			@NonNull
