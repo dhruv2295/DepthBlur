@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class GalleryActivity extends AppCompatActivity {
 
 	private ArrayList<String> listOfAllImages;
 	private ImageAdapter mAdapter;
+	private long mLastClickTime = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,11 @@ public class GalleryActivity extends AppCompatActivity {
 
 
 		mAdapter.setClickListener((path, position) -> {
+			if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+				return;
+			}
+			mLastClickTime = SystemClock.elapsedRealtime();
+
 			Intent i = new Intent(GalleryActivity.this, MainActivity.class);
 			i.putExtra("path", path);
 			startActivity(i);
