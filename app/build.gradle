@@ -29,7 +29,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a' /* remove x86 before release*/, 'x86'
+            abiFilters 'armeabi-v7a', 'arm64-v8a' ///* remove x86 before release*/, 'x86'
             // // these platforms cover 99% percent of all Android devices
         }
     }
