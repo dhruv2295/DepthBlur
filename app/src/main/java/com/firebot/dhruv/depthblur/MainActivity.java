@@ -117,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
 		progressBar.setVisibility(View.VISIBLE);
 		share.hide();
 
-		Vibrator v;
-		v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 		Glide.with(this).asBitmap().load(getIntent().getStringExtra("path")).into(new SimpleTarget<Bitmap>() {
 			@Override
@@ -159,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
 		horizontalWheelView.setListener(new HorizontalWheelView.Listener() {
 			@Override
 			public void onRotationChanged(double radians) {
-				v.vibrate(500);
 
 				if (mask != null) {
 					blurred = BlurBuilder.blur(MainActivity.this, mask, (int) (1 + 20 * horizontalWheelView.getCompleteTurnFraction()));
