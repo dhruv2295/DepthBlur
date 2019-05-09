@@ -1,12 +1,10 @@
 package com.firebot.dhruv.depthblur;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Vibrator;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -47,10 +45,12 @@ public class MainActivity extends AppCompatActivity {
 	private int inputSize = 513;
 
 	int w, h;
-	Bitmap resized;
-	Bitmap mask;
-	Bitmap blurred;
-	Bitmap source;
+	private Bitmap resized;
+	private Bitmap mask;
+	private Bitmap blurred;
+	private Bitmap source;
+
+	private Uri sourceUri;
 
 //	LABEL_NAMES =
 //			'0:background', '1:aeroplane', '2:bicycle', '3:bird', '4:boat', '5:bottle', '6:bus',
@@ -66,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
 	@OnClick(R.id.floatingActionButton2)
 	public void _share(FloatingActionButton imageView) {
 		progressBar.setVisibility(View.VISIBLE);
-//		Bitmap overlay = Utils.overlay(resized, blurred);
-//		Bitmap finalBitmap = ImageUtils.tfResizeBilinear(overlay, w, h);
-//		Bitmap overlay = Utils.overlay(source, ImageUtils.tfResizeBilinear(blurred, w, h));
 
 		new BitmapTask(w, h, overlay -> {
 			File sdc = new File(Environment.getExternalStorageDirectory() + "/DepthBlur");
@@ -76,14 +73,7 @@ public class MainActivity extends AppCompatActivity {
 				sdc.mkdirs();
 			}
 
-			File media = new File(getIntent().getStringExtra("path"));
-
-			Uri uri = FileProvider.getUriForFile(
-					MainActivity.this,
-					getApplicationContext()
-							.getPackageName() + ".provider", media);
-
-			File resultImage = new File(sdc.getAbsolutePath() + File.separator + Utils.getName(MainActivity.this, uri));
+			File resultImage = new File(sdc.getAbsolutePath() + File.separator + Utils.getName(MainActivity.this, sourceUri));
 			try (FileOutputStream out = new FileOutputStream(resultImage)) {
 				overlay.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
 				// PNG is a lossless format, the compression factor (100) is ignored
@@ -117,8 +107,24 @@ public class MainActivity extends AppCompatActivity {
 		progressBar.setVisibility(View.VISIBLE);
 		share.hide();
 
+		Intent intent = getIntent();
+		String action = intent.getAction();
+		String type = intent.getType();
 
-		Glide.with(this).asBitmap().load(getIntent().getStringExtra("path")).into(new SimpleTarget<Bitmap>() {
+		if (Intent.ACTION_SEND.equals(action) && type != null) {
+			if (type.startsWith("image/")) {
+				sourceUri =  intent.getParcelableExtra(Intent.EXTRA_STREAM);
+			}
+		}
+		else {
+			String sourceFilePath = intent.getStringExtra("path");
+			sourceUri = FileProvider.getUriForFile(
+					MainActivity.this,
+					getApplicationContext()
+							.getPackageName() + ".provider", new File(sourceFilePath));
+		}
+
+		Glide.with(this).asBitmap().load(sourceUri).into(new SimpleTarget<Bitmap>() {
 			@Override
 			public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
 				w = resource.getWidth();
