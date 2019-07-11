@@ -7,6 +7,10 @@ import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.firebot.dhruv.depthblur.ml.DeeplabModel;
 import com.google.android.gms.ads.MobileAds;
+import com.mopub.common.MoPub;
+import com.mopub.common.SdkConfiguration;
+import com.mopub.common.SdkInitializationListener;
+import com.mopub.common.logging.MoPubLog;
 
 import io.fabric.sdk.android.Fabric;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +26,20 @@ public class TensorApplication extends Application {
 
 		MobileAds.initialize(this, getString(R.string.ad_app_id));
 
+
+		SdkConfiguration sdkConfiguration = new SdkConfiguration.Builder("b195f8dd8ded45fe847ad89ed1d016da")
+				.withLogLevel(MoPubLog.LogLevel.DEBUG)
+				.withLegitimateInterestAllowed(false)
+				.build();
+
+		MoPub.initializeSdk(this, sdkConfiguration, new SdkInitializationListener() {
+			@Override
+			public void onInitializationFinished() {
+				Timber.d("Mopub Initialized");
+			}
+		});
+
+
 		Timber.plant(new Timber.DebugTree() {
 			@NonNull
 			@Override
@@ -29,6 +47,7 @@ public class TensorApplication extends Application {
 				return super.createStackElementTag(element) + ":" + element.getLineNumber();
 			}
 		});
-		Fabric.with(this, new Crashlytics());
+
+		if(!BuildConfig.DEBUG) Fabric.with(this, new Crashlytics());
 	}
 }
