@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,11 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebot.dhruv.depthblur.utils.ItemOffsetDecoration;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class GalleryActivity extends AppCompatActivity {
 	public static final int EXTERNAL_READ = 102;
@@ -47,6 +51,7 @@ public class GalleryActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_gallery);
 		ButterKnife.bind(this);
 
+		setupFirebaseDatabse();
 		AdRequest adRequest = new AdRequest.Builder().build();
 		adView.loadAd(adRequest);
 
@@ -128,5 +133,34 @@ public class GalleryActivity extends AppCompatActivity {
 			// other 'case' lines to check for other
 			// permissions this app might request.
 		}
+	}
+
+
+	private void setupFirebaseDatabse() {
+		FirebaseFirestore db = FirebaseFirestore.getInstance();
+		db.collection("ads")
+				.get()
+				.addOnCompleteListener(task -> {
+					if (task.isSuccessful()) {
+						DocumentSnapshot document = task.getResult().getDocuments().get(0);
+
+						Timber.d(document.getId() + " => " + document.getData());
+						Timber.d(""+document.getBoolean("show"));
+						if(document.getBoolean("show"))
+							adView.setVisibility(View.VISIBLE);
+						else
+							adView.setVisibility(View.GONE);
+
+					} else {
+						Timber.w(task.getException(), "Error getting documents:");
+					}
+				});
+
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		adView.destroy();
 	}
 }

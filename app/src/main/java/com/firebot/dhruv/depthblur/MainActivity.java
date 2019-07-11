@@ -24,7 +24,12 @@ import com.firebot.dhruv.depthblur.ml.ImageUtils;
 import com.firebot.dhruv.depthblur.utils.BlurBuilder;
 import com.firebot.dhruv.depthblur.utils.Utils;
 import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -53,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
 	private Uri sourceUri;
 
+	private InterstitialAd mInterstitialAd;
+	private boolean showAd = true;
+
 //	LABEL_NAMES =
 //			'0:background', '1:aeroplane', '2:bicycle', '3:bird', '4:boat', '5:bottle', '6:bus',
 //			'7:car', '8:cat', '9:chair', '10:cow', '11:diningtable', '12:dog', '13:horse', '14:motorbike',
@@ -66,6 +74,28 @@ public class MainActivity extends AppCompatActivity {
 
 	@OnClick(R.id.floatingActionButton2)
 	public void _share(FloatingActionButton imageView) {
+		if (showAd) {
+			if (mInterstitialAd.isLoaded()) {
+				mInterstitialAd.show();
+			} else Timber.d("The interstitial wasn't loaded yet.");
+
+			mInterstitialAd.setAdListener(new AdListener() {
+
+				@Override
+				public void onAdClosed() {
+					Timber.d("Ad closed");
+					// Code to be executed when the interstitial ad is closed.
+					processShare();
+				}
+			});
+		} else
+			processShare();
+
+
+	}
+
+	private void processShare()
+	{
 		progressBar.setVisibility(View.VISIBLE);
 
 		new BitmapTask(w, h, overlay -> {
@@ -98,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
 
 		}).execute(source, blurred);
 
-
-
 	}
 
 	@Override
@@ -107,6 +135,12 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		ButterKnife.bind(this);
+
+		setupFirebaseDatabse();
+		mInterstitialAd = new InterstitialAd(this);
+		mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id_test));
+		mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
 		progressBar.setVisibility(View.VISIBLE);
 		share.hide();
 
@@ -173,5 +207,23 @@ public class MainActivity extends AppCompatActivity {
 				}
 			}
 		});
+	}
+
+	private void setupFirebaseDatabse() {
+		FirebaseFirestore db = FirebaseFirestore.getInstance();
+		db.collection("ads")
+				.get()
+				.addOnCompleteListener(task -> {
+					if (task.isSuccessful()) {
+						DocumentSnapshot document = task.getResult().getDocuments().get(0);
+
+						Timber.d(document.getId() + " => " + document.getData());
+						Timber.d(""+document.getBoolean("show_full"));
+						showAd = document.getBoolean("show_full");
+					} else {
+						Timber.w(task.getException(), "Error getting documents:");
+					}
+				});
+
 	}
 }
