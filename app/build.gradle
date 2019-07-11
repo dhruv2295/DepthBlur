@@ -24,13 +24,13 @@ android {
         applicationId "com.firebot.dhruv.depthblur"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 6
+        versionCode 7
         versionName "1.0.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
         ndk {
-            abiFilters 'armeabi-v7a', 'arm64-v8a' /* remove x86 before release*/, 'x86'
+            abiFilters 'armeabi-v7a', 'arm64-v8a' ///* remove x86 before release*/, 'x86'
             // // these platforms cover 99% percent of all Android devices
         }
     }
