@@ -74,7 +74,7 @@
         android:clickable="true"
         app:layout_constraintBottom_toTopOf="@+id/horizontalWheelView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_share" />
+        app:srcCompat="@drawable/ic_file_download" />
 
     <ProgressBar
         android:id="@+id/progressBar"

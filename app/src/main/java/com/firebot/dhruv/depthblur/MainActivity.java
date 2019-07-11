@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -91,7 +92,9 @@ public class MainActivity extends AppCompatActivity {
 			shareIntent.setAction(Intent.ACTION_SEND);
 			shareIntent.putExtra(Intent.EXTRA_STREAM, resulturi);
 			shareIntent.setType("image/*");
-			startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_to)));
+			startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.open_with)));
+
+			Toast.makeText(getApplicationContext(), "Your image has been saved!", Toast.LENGTH_LONG).show();
 
 		}).execute(source, blurred);
 
