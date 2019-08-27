@@ -77,7 +77,10 @@ public class MainActivity extends AppCompatActivity {
 		if (showAd) {
 			if (mInterstitialAd.isLoaded()) {
 				mInterstitialAd.show();
-			} else Timber.d("The interstitial wasn't loaded yet.");
+			} else {
+				processShare();
+				Timber.d("The interstitial wasn't loaded yet.");
+			}
 
 			mInterstitialAd.setAdListener(new AdListener() {
 
@@ -85,6 +88,12 @@ public class MainActivity extends AppCompatActivity {
 				public void onAdClosed() {
 					Timber.d("Ad closed");
 					// Code to be executed when the interstitial ad is closed.
+					processShare();
+				}
+
+				@Override
+				public void onAdFailedToLoad(int i) {
+					super.onAdFailedToLoad(i);
 					processShare();
 				}
 			});
