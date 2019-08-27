@@ -19,13 +19,13 @@ android {
             keyPassword 'Dhruv2295'
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.firebot.dhruv.depthblur"
         minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 7
-        versionName "1.0.4"
+        targetSdkVersion 29
+        versionCode 9
+        versionName "1.0.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -42,12 +42,16 @@ android {
             signingConfig signingConfigs.release
 
         }
+        debug {
+            multiDexEnabled true
+        }
     }
 
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+    buildToolsVersion = '29.0.2'
 }
 
 dependencies {

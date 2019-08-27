@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
 		setupFirebaseDatabse();
 		mInterstitialAd = new InterstitialAd(this);
-		mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id_test));
+		mInterstitialAd.setAdUnitId(getString(R.string.interstitial_ad_unit_id));
 		mInterstitialAd.loadAd(new AdRequest.Builder().build());
 
 		progressBar.setVisibility(View.VISIBLE);
