@@ -51,7 +51,7 @@ public class GalleryActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_gallery);
 		ButterKnife.bind(this);
 
-		setupFirebaseDatabse();
+//		setupFirebaseDatabse();
 		AdRequest adRequest = new AdRequest.Builder().build();
 		adView.loadAd(adRequest);
 
