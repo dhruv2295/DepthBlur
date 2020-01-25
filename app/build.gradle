@@ -24,8 +24,8 @@ android {
         applicationId "com.firebot.dhruv.depthblur"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 10
-        versionName "1.0.7"
+        versionCode 11
+        versionName "1.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -56,26 +56,26 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha5'
-    implementation 'com.google.firebase:firebase-ads:18.1.1'
-    implementation 'com.google.firebase:firebase-core:17.1.0'
-    testImplementation 'junit:junit:4.13-beta-2'
-    androidTestImplementation 'androidx.test:runner:1.2.0-beta01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.2.0-alpha01'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
+    implementation 'com.google.firebase:firebase-ads:18.3.0'
+    implementation 'com.google.firebase:firebase-core:17.2.2'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test:runner:1.3.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha03'
     implementation 'com.jakewharton.timber:timber:4.7.1'
-    implementation 'androidx.exifinterface:exifinterface:1.1.0-beta01'
-    implementation 'com.github.bumptech.glide:glide:4.6.1'
+    implementation 'androidx.exifinterface:exifinterface:1.2.0-beta01'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation "org.tensorflow:tensorflow-android:1.13.1"
     implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 //    implementation 'com.android.support:design:28.0.0'
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
-    implementation 'com.google.firebase:firebase-firestore:21.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.3.1'
     implementation 'com.getbase:floatingactionbutton:1.10.1'
     implementation 'com.android.support:multidex:1.0.3'
 
